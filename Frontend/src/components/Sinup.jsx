@@ -13,7 +13,7 @@ function Signup() {
   const onSubmit = (data) => {
     console.log('Form submitted:', data);
     // Handle successful sign up and redirect
-    navigate('/');
+    navigate('/login');
   };
 
   return (

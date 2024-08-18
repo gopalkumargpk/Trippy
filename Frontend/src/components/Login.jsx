@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 
@@ -9,6 +9,19 @@ function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  
+  const dialogRef = useRef(null);
+  const [isModalOpen, setIsModalOpen] = useState(true);
+
+  useEffect(() => {
+    if (dialogRef.current) {
+      if (isModalOpen) {
+        dialogRef.current.showModal(); // Show the modal when component mounts
+      } else {
+        dialogRef.current.close(); // Close the modal when `isModalOpen` is false
+      }
+    }
+  }, [isModalOpen]);
 
   const onSubmit = (data) => {
     console.log(data);
@@ -16,16 +29,18 @@ function Login() {
   };
 
   const closeModal = () => {
-    navigate("/"); // Redirect to home page when close button is clicked
+    setIsModalOpen(false); // Update state to close modal
+    setTimeout(() => navigate("/"), 300); // Redirect to home page after closing animation
   };
 
   return (
     <div>
-      <dialog id="my_modal_3" className="modal">
+      <dialog ref={dialogRef} id="my_modal_3" className="modal">
         <div className="modal-box">
           <button 
             className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
             onClick={closeModal}
+            aria-label="Close"
           >
             ✕
           </button>
@@ -38,22 +53,20 @@ function Login() {
                 className='w-full max-w-xs px-3 py-2 border rounded-md outline-none'
                 {...register("email", { required: "Email is required" })}
               />
-              <br/>
               {errors.email && <span className='text-red-500'>
-              {errors.email.message}</span>}
+                {errors.email.message}
+              </span>}
             </div>
             <div className='space-y-2'>
               <input 
                 type='password' 
                 placeholder='Enter your password' 
                 className='w-full max-w-xs px-3 py-2 border rounded-md outline-none'
-                {...register("password", 
-              
-                
-                { required: "Password is required" })}
+                {...register("password", { required: "Password is required" })}
               />
-              <br/>
-              {errors.password && <span className='text-red-500'>{errors.password.message}</span>}
+              {errors.password && <span className='text-red-500'>
+                {errors.password.message}
+              </span>}
             </div>
             <div className='flex justify-center mt-4'>
               <button 

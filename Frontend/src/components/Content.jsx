@@ -1,6 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 
 function Contact() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post('http://localhost:4001/api/contact', formData);
+      alert('Message sent successfully!');
+      setFormData({ name: '', email: '', message: '' }); // Clear the form
+    } catch (error) {
+      alert('Error sending message.');
+    }
+  };
+
   return (
     <>
       <div className="bg-gray-100 py-12" id="content">
@@ -31,12 +54,15 @@ function Contact() {
             <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6 text-center">
               Get in Touch
             </h2>
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                 <div>
                   <label className="block text-gray-700 font-semibold mb-2">Name</label>
                   <input 
                     type="text" 
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
                     className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900" 
                     placeholder="Your Name" 
                   />
@@ -45,6 +71,9 @@ function Contact() {
                   <label className="block text-gray-700 font-semibold mb-2">Email</label>
                   <input 
                     type="email" 
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
                     className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900" 
                     placeholder="Your Email" 
                   />
@@ -52,6 +81,9 @@ function Contact() {
                 <div className="col-span-2">
                   <label className="block text-gray-700 font-semibold mb-2">Message</label>
                   <textarea 
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
                     className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900" 
                     placeholder="Your Message" 
                     rows="4"

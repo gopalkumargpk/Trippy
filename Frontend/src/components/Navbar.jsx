@@ -23,6 +23,7 @@ function Navbar() {
       <li><a href="/">Home</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#content">Content</a></li>
+      <li><a href="/login">Login</a></li>
     </>
   );
 
@@ -91,13 +92,6 @@ function Navbar() {
               />
             </svg>
           </label>
-          <div
-            className="ml-4 px-4 py-2 rounded-md bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold hover:from-blue-600 hover:to-purple-600 duration-300 cursor-pointer"
-            onClick={() => document.getElementById("my_modal_3").showModal()}
-          >
-            <span>Login</span>
-            <Login />
-          </div>
         </div>
       </div>
     </div>
